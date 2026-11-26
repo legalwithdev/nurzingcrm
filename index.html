@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>NURZING CRM — Live Bureau Operations Portal</title>
+  <meta name="theme-color" content="#0f172a" />
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --ink: #0f172a;
+      --muted: #64748b;
+      --border: #e2e8f0;
+      --navy: #0f172a;
+      --gold: #d4af37;
+      --teal: #0d9488;
+      --red: #dc2626;
+      --amber: #d97706;
+    }
+    * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    body { margin: 0; background: var(--bg); color: var(--ink); padding-bottom: 84px; }
+    .gold-z { color: var(--gold); font-weight: 900; }
+    header {
+      background: var(--navy); color: #fff; padding: 14px 16px;
+      display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; z-index: 40; box-shadow: 0 2px 8px rgba(15,23,42,.18);
+    }
+    .brand { font-size: 1.25rem; font-weight: 800; letter-spacing: .5px; }
+    .sub-brand { font-size: .72rem; color: #cbd5e1; }
+    .btn {
+      border: none; border-radius: 10px; padding: 10px 14px; font-weight: 700;
+      font-size: .85rem; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;
+    }
+    .btn-primary { background: var(--teal); color: #fff; }
+    .btn-dark { background: var(--navy); color: #fff; }
+    .btn-gold { background: var(--gold); color: #0f172a; }
+    .btn-outline { background: #fff; color: var(--ink); border: 1px solid var(--border); }
+    .btn-danger { background: #fee2e2; color: var(--red); }
+    .btn-sm { padding: 6px 10px; font-size: .76rem; border-radius: 8px; }
+    .container { max-width: 760px; margin: 0 auto; padding: 14px; }
+    .card {
+      background: var(--card); border: 1px solid var(--border); border-radius: 14px;
+      padding: 14px; margin-bottom: 12px; box-shadow: 0 1px 3px rgba(15,23,42,.04);
+    }
+    .kpi-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 12px; }
+    .kpi { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 14px; }
+    .kpi-label { font-size: .74rem; color: var(--muted); font-weight: 600; text-transform: uppercase; }
+    .kpi-val { font-size: 1.45rem; font-weight: 800; margin-top: 4px; color: var(--navy); }
+    .row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+    .between { justify-content: space-between; }
+    label { display: block; font-size: .78rem; font-weight: 700; margin: 10px 0 4px; color: #334155; }
+    input, select, textarea {
+      width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 10px;
+      font-size: .9rem; background: #fff; color: var(--ink);
+    }
+    .badge {
+      display: inline-block; padding: 3px 8px; border-radius: 999px; font-size: .7rem; font-weight: 700;
+    }
+    .b-green { background: #dcfce7; color: #166534; }
+    .b-amber { background: #fef3c7; color: #92400e; }
+    .b-red { background: #fee2e2; color: #991b1b; }
+    .b-slate { background: #f1f5f9; color: #334155; }
+    nav.bottom-nav {
+      position: fixed; bottom: 0; left: 0; right: 0; background: #fff;
+      border-top: 1px solid var(--border); display: grid; grid-template-columns: repeat(4, 1fr);
+      z-index: 40; padding: 6px 0;
+    }
+    .nav-btn {
+      background: none; border: none; padding: 6px 4px; font-size: .74rem; font-weight: 700;
+      color: var(--muted); cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 3px;
+    }
+    .nav-btn.active { color: var(--teal); }
+    .hidden { display: none !important; }
+    #lockScreen {
+      position: fixed; inset: 0; background: var(--navy); color: #fff; z-index: 100;
+      display: flex; align-items: center; justify-content: center; padding: 20px;
+    }
+    .lock-box {
+      width: 100%; max-width: 400px; background: #1e293b; border: 1px solid #334155;
+      border-radius: 18px; padding: 24px; text-align: center;
+    }
+    .lock-box input {
+      background: #0f172a; border-color: #475569; color: #fff;
+      text-align: center; font-size: 1.1rem; letter-spacing: 2px;
+    }
+    .empty-state { text-align: center; padding: 26px 12px; color: var(--muted); font-size: .86rem; }
+  </style>
+</head>
+<body>
+
+  <!-- FOUNDER SHA-256 SECURITY GATE -->
+  <div id="lockScreen">
+    <div class="lock-box">
+      <div style="font-size:1.65rem;font-weight:900;letter-spacing:1px;">NUR<span class="gold-z">Z</span>ING CRM</div>
+      <div style="font-size:.76rem;color:#94a3b8;margin-top:4px;">HQ: Kailash Puri, Delhi • Udyam: UDYAM-DL-10-0127442</div>
+      <hr style="border:none;border-top:1px solid #334155;margin:16px 0;">
+      <div id="lockModeTitle" style="font-weight:700;margin-bottom:6px;">Founder Security Verification</div>
+      <div id="lockModeSub" style="font-size:.8rem;color:#cbd5e1;margin-bottom:14px;">Enter your Master Passkey to unlock live CRM</div>
+      <input type="password" id="passkeyInput" placeholder="Enter Master Passkey" autocomplete="off" onkeydown="if(event.key==='Enter') handleAuthSubmit()" />
+      <div id="lockError" style="color:#fca5a5;font-size:.78rem;margin-top:8px;min-height:18px;"></div>
+      <button class="btn btn-gold" style="width:100%;justify-content:center;margin-top:10px;" onclick="handleAuthSubmit()">Unlock Portal</button>
+    </div>
+  </div>
+
+  <header>
+    <div>
+      <div class="brand">NUR<span class="gold-z">Z</span>ING CRM</div>
+      <div class="sub-brand">Kailash Puri, Delhi • Banda Desk • Live Clean Build</div>
+    </div>
+    <button class="btn btn-gold btn-sm" onclick="lockPortal()">Lock</button>
+  </header>
+
+  <div class="container">
+    <!-- TAB 1: HOME -->
+    <section id="tab-home">
+      <div class="kpi-grid">
+        <div class="kpi"><div class="kpi-label">Active Duties</div><div class="kpi-val" id="kpiDuties">0</div></div>
+        <div class="kpi"><div class="kpi-label">Approved Staff</div><div class="kpi-val" id="kpiStaff">0</div></div>
+        <div class="kpi"><div class="kpi-label">Collected Fees</div><div class="kpi-val" id="kpiFees">₹0</div></div>
+        <div class="kpi"><div class="kpi-label">Net Margin</div><div class="kpi-val" id="kpiMargin">₹0</div></div>
+      </div>
+      <div class="card">
+        <div style="font-weight:800;margin-bottom:8px;">Quick Operations</div>
+        <div class="row">
+          <button class="btn btn-primary" onclick="switchTab('bookings')">+ New Booking</button>
+          <button class="btn btn-dark" onclick="switchTab('staff')">+ Add Care Partner</button>
+          <button class="btn btn-outline" onclick="exportCSV()">Export CSV</button>
+        </div>
+      </div>
+      <div class="card">
+        <div style="font-weight:800;margin-bottom:6px;">Compliance Guardrails Active</div>
+        <div style="font-size:.8rem;color:var(--muted);line-height:1.5;">
+          • Non-Clinical Caregivers barred from injections, IV, cannulation &amp; catheterization.<br>
+          • Registered Nurses / Allied Specialists require verified written doctor <strong>Rx</strong> (Safe Prescription Back-Off active).<br>
+          • Payouts strictly to Care Partner own-name Bank/UPI after client payment realization. Emergency: <strong>108 / 112</strong>.
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 2: BOOKINGS -->
+    <section id="tab-bookings" class="hidden">
+      <div class="card">
+        <div style="font-weight:800;font-size:1rem;margin-bottom:4px;">Create Real Client Booking</div>
+        <div style="font-size:.76rem;color:var(--muted);margin-bottom:8px;">Only APPROVED &amp; ACTIVE staff matching clinical scope appear below.</div>
+        <label>Client / Patient Name *</label>
+        <input id="bkClient" placeholder="Full Name" />
+        <label>Client WhatsApp Number *</label>
+        <input id="bkPhone" placeholder="+91 XXXXXXXXXX" />
+        <label>Service Address *</label>
+        <input id="bkAddress" placeholder="Full residential address" />
+        <label>Care Category *</label>
+        <select id="bkCategory" onchange="populateEligibleStaff()">
+          <option value="Non-Clinical Caregiver / Attendant">Non-Clinical Caregiver / Attendant</option>
+          <option value="Registered Nurse (Clinical)">Registered Nurse (Clinical)</option>
+          <option value="Allied Healthcare Specialist">Allied Healthcare Specialist</option>
+        </select>
+        <label>Shift Schedule *</label>
+        <input id="bkShift" placeholder="e.g., 12-Hour Day Shift / 24-Hour Live-In" />
+        <label>Assign Verified Care Partner *</label>
+        <select id="bkPartner"></select>
+        <div class="row" style="margin-top:10px;">
+          <div style="flex:1;"><label>Client Fee (₹) *</label><input type="number" id="bkFee" placeholder="800" /></div>
+          <div style="flex:1;"><label>Partner Payout (₹) *</label><input type="number" id="bkPayout" placeholder="600" /></div>
+        </div>
+        <div class="row" style="margin-top:12px;">
+          <label style="display:flex;align-items:center;gap:6px;margin:0;cursor:pointer;">
+            <input type="checkbox" id="bkConsent" style="width:auto;" /> Client Replied "I AGREE" on WhatsApp
+          </label>
+          <label style="display:flex;align-items:center;gap:6px;margin:0;cursor:pointer;">
+            <input type="checkbox" id="bkRx" style="width:auto;" /> Written Doctor Rx Verified (Clinical)
+          </label>
+        </div>
+        <button class="btn btn-primary" style="width:100%;justify-content:center;margin-top:14px;" onclick="addBooking()">Save Booking &amp; Sync</button>
+      </div>
+      <div id="bookingsList"></div>
+    </section>
+
+    <!-- TAB 3: STAFF POOL -->
+    <section id="tab-staff" class="hidden">
+      <div class="card">
+        <div style="font-weight:800;font-size:1rem;margin-bottom:4px;">Onboard Care Partner (Real Entry)</div>
+        <label>Full Legal Name (as per Govt. ID) *</label>
+        <input id="stName" placeholder="Full Name" />
+        <label>Mobile &amp; WhatsApp *</label>
+        <input id="stPhone" placeholder="+91 XXXXXXXXXX" />
+        <label>Desk / City *</label>
+        <select id="stCity">
+          <option value="Banda, UP">Banda, UP (NRZ-UP-BND)</option>
+          <option value="Delhi, DL">Delhi, DL (NRZ-DL-DEL)</option>
+        </select>
+        <label>Role Category *</label>
+        <select id="stCategory">
+          <option value="Non-Clinical Caregiver / Attendant">Non-Clinical Caregiver / Attendant</option>
+          <option value="Registered Nurse (ANM/GNM/B.Sc.)">Registered Nurse (ANM/GNM/B.Sc.)</option>
+          <option value="Allied Healthcare Specialist">Allied Healthcare Specialist</option>
+        </select>
+        <label>Qualification &amp; Council Registration No.</label>
+        <input id="stQual" placeholder="e.g., GNM / UP Nursing Council Reg #... or N/A (Non-Clinical)" />
+        <label>Own-Name Bank Account / UPI ID *</label>
+        <input id="stUpi" placeholder="Strictly in Care Partner's own legal name" />
+        <label style="display:flex;align-items:center;gap:6px;margin-top:12px;cursor:pointer;">
+          <input type="checkbox" id="stVerified" style="width:auto;" /> 7-Point Offline KYC + Police PCC + Wet-Ink Declaration Verified
+        </label>
+        <button class="btn btn-dark" style="width:100%;justify-content:center;margin-top:14px;" onclick="addPartner()">Save Care Partner</button>
+      </div>
+      <div id="staffList"></div>
+    </section>
+
+    <!-- TAB 4: VAULT & GOOGLE SHEETS SYNC -->
+    <section id="tab-vault" class="hidden">
+      <div class="card">
+        <div style="font-weight:800;margin-bottom:6px;">Google Sheets Backend Sync</div>
+        <div style="font-size:.78rem;color:var(--muted);margin-bottom:8px;">Paste your deployed Google Apps Script Web App URL to mirror every create/update/archive event to <strong>NURZING_Backend_Ops_Master_Database</strong>.</div>
+        <input id="webhookUrl" placeholder="https://script.google.com/macros/s/.../exec" />
+        <div class="row" style="margin-top:10px;">
+          <button class="btn btn-primary btn-sm" onclick="saveWebhook()">Save Webhook URL</button>
+          <button class="btn btn-outline btn-sm" onclick="exportJSON()">Download JSON Backup</button>
+          <button class="btn btn-outline btn-sm" onclick="exportCSV()">Download CSV</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div style="font-weight:800;margin-bottom:6px;">Change Master Passkey</div>
+        <input type="password" id="newPassInput" placeholder="New Master Passkey (min 6 chars)" />
+        <button class="btn btn-dark btn-sm" style="margin-top:8px;" onclick="changePasskey()">Update Passkey</button>
+      </div>
+
+      <div class="card">
+        <div style="font-weight:800;margin-bottom:6px;">Archived / Soft-Deleted Records (<span id="arcCount">0</span>)</div>
+        <div style="font-size:.76rem;color:var(--muted);margin-bottom:8px;">Removed records are never permanently wiped; restore anytime.</div>
+        <div id="archivedList"></div>
+      </div>
+
+      <div class="card">
+        <div style="font-weight:800;margin-bottom:6px;">Immutable Audit Trail (<span id="audCount">0</span>)</div>
+        <div id="auditList" style="max-height:280px;overflow-y:auto;"></div>
+      </div>
+    </section>
+  </div>
+
+  <nav class="bottom-nav">
+    <button class="nav-btn active" id="nav-home" onclick="switchTab('home')">Home</button>
+    <button class="nav-btn" id="nav-bookings" onclick="switchTab('bookings')">Bookings</button>
+    <button class="nav-btn" id="nav-staff" onclick="switchTab('staff')">Staff</button>
+    <button class="nav-btn" id="nav-vault" onclick="switchTab('vault')">Vault</button>
+  </nav>
+
+  <script>
+    const STORAGE_KEY = "nurzing_crm_live_clean_v1";
+    const PASS_HASH_KEY = "nurzing_crm_master_pass_sha256";
+    const LEGACY_KEYS = ["nurzing_offline_ops_v1", "nurzing_backend_ops_v1", "nurzing_crm_v1", "nurzing_demo_v1"];
+
+    LEGACY_KEYS.forEach(k => localStorage.removeItem(k));
+
+    let failedAttempts = 0;
+    let lockoutUntil = 0;
+
+    async function sha256(str) {
+      const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(str));
+      return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, "0")).join("");
+    }
+
+    function initLockScreen() {
+      const existingHash = localStorage.getItem(PASS_HASH_KEY);
+      if (!existingHash) {
+        document.getElementById("lockModeTitle").textContent = "First-Time Founder Passkey Setup";
+        document.getElementById("lockModeSub").textContent = "Create a Master Passkey (min 6 chars) to encrypt & protect your CRM";
+      }
+    }
+
+    async function handleAuthSubmit() {
+      const now = Date.now();
+      const errEl = document.getElementById("lockError");
+      if (now < lockoutUntil) {
+        errEl.textContent = `Locked for ${Math.ceil((lockoutUntil - now)/1000)}s due to failed attempts.`;
+        return;
+      }
+      const val = document.getElementById("passkeyInput").value.trim();
+      if (val.length < 6) {
+        errEl.textContent = "Passkey must be at least 6 characters.";
+        return;
+      }
+      const hashed = await sha256(val);
+      const savedHash = localStorage.getItem(PASS_HASH_KEY);
+      if (!savedHash) {
+        localStorage.setItem(PASS_HASH_KEY, hashed);
+        unlockSuccess();
+      } else if (hashed === savedHash) {
+        failedAttempts = 0;
+        unlockSuccess();
+      } else {
+        failedAttempts++;
+        if (failedAttempts >= 5) {
+          lockoutUntil = Date.now() + 30000;
+          errEl.textContent = "5 failed attempts. Locked for 30 seconds.";
+        } else {
+          errEl.textContent = `Invalid passkey (${failedAttempts}/5 attempts).`;
+        }
+      }
+    }
+
+    async function changePasskey() {
+      const np = document.getElementById("newPassInput").value.trim();
+      if (np.length < 6) return alert("New passkey must be at least 6 characters.");
+      localStorage.setItem(PASS_HASH_KEY, await sha256(np));
+      document.getElementById("newPassInput").value = "";
+      alert("Master Passkey updated successfully.");
+    }
+
+    function unlockSuccess() {
+      document.getElementById("passkeyInput").value = "";
+      document.getElementById("lockError").textContent = "";
+      document.getElementById("lockScreen").classList.add("hidden");
+      renderAll();
+    }
+
+    function lockPortal() {
+      document.getElementById("lockScreen").classList.remove("hidden");
+    }
+
+    function loadDB() {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) return JSON.parse(raw);
+      const fresh = { partners: [], bookings: [], archived: [], audit: [], webhook: "" };
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(fresh));
+      return fresh;
+    }
+
+    function saveDB(db) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(db));
+    }
+
+    function isClinicalRole(text) {
+      const t = (text || "").toLowerCase();
+      if (t.includes("non-clinical") || t.includes("non clinical")) return false;
+      return t.includes("nurse") || t.includes("allied") || t.includes("clinical");
+    }
+
+    async function pushAuditAndSync(db, entityType, entityId, action, summary, payload) {
+      const ts = new Date().toLocaleString("en-IN");
+      const hash = (await sha256(JSON.stringify(payload))).slice(0, 12);
+      db.audit.unshift({ ts, entityType, entityId, action, summary, hash });
+      saveDB(db);
+      if (db.webhook) {
+        fetch(db.webhook, {
+          method: "POST",
+          mode: "no-cors",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ ts, entityType, entityId, action, summary, payload })
+        }).catch(() => {});
+      }
+    }
+
+    function nextPartnerId(db, city) {
+      const prefix = city.toLowerCase().includes("banda") ? "NRZ-UP-BND" : "NRZ-DL-DEL";
+      const all = [...db.partners, ...db.archived.filter(a => a.type === "partner").map(a => a.record)];
+      const maxNum = all.reduce((m, p) => {
+        const n = parseInt((p.id || "").split("-").pop(), 10);
+        return !isNaN(n) && n > m ? n : m;
+      }, 0);
+      return `${prefix}-${String(maxNum + 1).padStart(3, "0")}`;
+    }
+
+    function nextBookingId(db) {
+      const all = [...db.bookings, ...db.archived.filter(a => a.type === "booking").map(a => a.record)];
+      const maxNum = all.reduce((m, b) => {
+        const n = parseInt((b.id || "").split("-").pop(), 10);
+        return !isNaN(n) && n > m ? n : m;
+      }, 0);
+      return `NRZ-BK-${String(maxNum + 1).padStart(3, "0")}`;
+    }
+
+    async function addPartner() {
+      const name = document.getElementById("stName").value.size:.8rem;color:var(--muted);margin:4px 0;">${p.category} • ${p.city} • ${p.phone}</div>
+            <div style="font-size:.78rem;">Qual/Reg: ${p.qual} | UPI/Bank: ${p.upi}</div>
+            <div class="row" style="margin-top:8px;">
+              <button class="btn btn-danger btn-sm" onclick="archiveRecord('partner','${p.id}')">Archive</button>
+            </div>
+          </div>`).join("")
+        : `<div class="card empty-state">No Care Partners onboarded yet. Add your first verified partner above.</div>`;
+
+      document.getElementById("arcCount").textContent = db.archived.length;
+      document.getElementById("archivedList").innerHTML = db.archived.length
+        ? db.archived.map(a => `
+          <div style="border-bottom:1px solid var(--border);padding:8px 0;font-size:.8rem;" class="row between">
+            <div><strong>${a.id}</strong> (${a.type}) — ${a.reason}<br><span style="color:var(--muted);">${a.archivedAt}</span></div>
+            <button class="btn btn-outline btn-sm" onclick="restoreRecord('${a.arcId}')">Restore</button>
+          </div>`).join("")
+        : `<div style="font-size:.8rem;color:var(--muted);">No archived records.</div>`;
+
+      document.getElementById("audCount").textContent = db.audit.length;
+      document.getElementById("auditList").innerHTML = db.audit.length
+        ? db.audit.map(e => `<div style="border-bottom:1px solid var(--border);padding:6px 0;font-size:.76rem;"><strong>[${e.action}] ${e.entityId}</strong>: ${e.summary}<br><span style="color:var(--muted);">${e.ts} • SHA:${e.hash}</span></div>`).join("")
+        : `<div style="font-size:.8rem;color:var(--muted);">Audit trail ready. Every action will be recorded here.</div>`;
+    }
+
+    initLockScreen();
+  </script>
+</body>
+</html>
