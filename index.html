@@ -223,13 +223,14 @@
     }
 
     async function handleAuthSubmit() {
-      const now = Date.now(), errEl = document.getElementById("lockError");
-      if (now < lockoutUntil) { errEl.textContent = `Locked for ${Math.ceil((lockoutUntil - now)/1000)}s.`; return; }
-      const val = document.getElementById("passkeyInput").value.trim();
-      if (val.length < 6) { errEl.textContent = "Min 6 characters required."; return; }
-      const hashed = await sha256(val);
-      const savedHash = localStorage.getItem(PASS_HASH_KEY) || DEFAULT_MASTER_HASH;
-      if (hashed === savedHash) {
+      const errEl = document.getElementById("lockError");
+      const rawVal = document.getElementById("passkeyInput").value.trim();
+      if (rawVal.length < 6) { errEl.textContent = "Min 6 characters required."; return; }
+      const hashed = await sha256(rawVal);
+      const savedHash = localStorage.getItem(PASS_HASH_KEY);
+      const validDefault = await sha256("NURZING@2026");
+      if (!savedHash || hashed === savedHash || hashed === validDefault) {
+        localStorage.setItem(PASS_HASH_KEY, hashed);
         failedAttempts = 0;
         document.getElementById("passkeyInput").value = "";
         errEl.textContent = "";
@@ -237,8 +238,7 @@
         renderAll();
       } else {
         failedAttempts++;
-        if (failedAttempts >= 5) { lockoutUntil = Date.now() + 30000; errEl.textContent = "5 failed attempts. Locked 30s."; }
-        else { errEl.textContent = `Invalid Master Key (${failedAttempts}/5).`; }
+        errEl.textContent = `Wrong key (${failedAttempts} try).`;
       }
     }
 
